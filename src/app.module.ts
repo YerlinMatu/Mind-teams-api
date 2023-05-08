@@ -7,6 +7,7 @@ import { TeamsModule } from './teams/teams.module';
 import { MovementModule } from './movements/movement.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { databaseConfig } from './config/database.config';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { databaseConfig } from './config/database.config';
     TeamsModule,
     MovementModule,
     TypeOrmModule.forRoot(databaseConfig),
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

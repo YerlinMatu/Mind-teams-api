@@ -16,5 +16,13 @@ export class User {
 
   @Column()
   role: string;
-  result: User | PromiseLike<User>;
+
+  @Column()
+  englishLevel?: string;
+
+  @Column()
+  technicalSkills?: string;
+
+  @Column()
+  cvLink?: string;
 }
