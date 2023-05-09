@@ -1,6 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, Between, ILike, FindOneOptions, FindManyOptions, FindOptionsOrder } from 'typeorm';
+import {
+  Repository,
+  Between,
+  ILike,
+  FindOneOptions,
+  FindOptionsOrder,
+} from 'typeorm';
 import { CreateMovementDto } from './dto/create-movement.dto';
 import { UpdateMovementDto } from './dto/update-movement.dto';
 import { Movement } from './entities/movement.entity';

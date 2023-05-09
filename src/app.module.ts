@@ -8,7 +8,6 @@ import { MovementModule } from './movements/movement.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { databaseConfig } from './config/database.config';
 import { AuthModule } from './auth/auth.module';
-import { Logger } from '@nestjs/common';
 
 @Module({
   imports: [
