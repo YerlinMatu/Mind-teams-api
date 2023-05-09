@@ -11,6 +11,8 @@ import { TeamsService } from './teams.service';
 import { CreateTeamDto } from './dto/create-team.dto';
 import { UpdateTeamDto } from './dto/update-team.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { Team } from './entities/team.entity';
+import { FindOneOptions } from 'typeorm';
 
 @ApiTags('teams')
 @Controller('teams')
@@ -28,17 +30,20 @@ export class TeamsController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.teamsService.findOne(+id);
+  findOne(@Param('id') id: FindOneOptions<Team>) {
+    return this.teamsService.findOne(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateTeamDto: UpdateTeamDto) {
-    return this.teamsService.update(+id, updateTeamDto);
+  update(
+    @Param('id') id: FindOneOptions<Team>,
+    @Body() updateTeamDto: UpdateTeamDto,
+  ) {
+    return this.teamsService.update(id, updateTeamDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.teamsService.remove(+id);
+    return this.teamsService.remove(id);
   }
 }

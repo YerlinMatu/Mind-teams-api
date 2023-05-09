@@ -1,26 +1,43 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { FindOneOptions, FindOptionsWhere, Repository } from 'typeorm';
 import { CreateTeamDto } from './dto/create-team.dto';
 import { UpdateTeamDto } from './dto/update-team.dto';
+import { Team } from './entities/team.entity';
 
 @Injectable()
 export class TeamsService {
-  create(createTeamDto: CreateTeamDto) {
-    return 'This action adds a new team';
+  constructor(
+    @InjectRepository(Team)
+    private teamRepository: Repository<Team>,
+  ) {}
+
+  async create(createTeamDto: CreateTeamDto): Promise<Team> {
+    const team = this.teamRepository.create(createTeamDto);
+    return await this.teamRepository.save(team);
   }
 
-  findAll() {
-    return `This action returns all teams`;
+  async findAll(): Promise<Team[]> {
+    return await this.teamRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} team`;
+  async findOne(id: FindOneOptions<Team>): Promise<Team> {
+    return await this.teamRepository.findOne(id);
   }
 
-  update(id: number, updateTeamDto: UpdateTeamDto) {
-    return `This action updates a #${id} team`;
+  async update(
+    id: FindOneOptions<Team>,
+    updateTeamDto: UpdateTeamDto,
+  ): Promise<Team> {
+    const team = await this.teamRepository.findOne(id);
+    if (!team) {
+      throw new Error(`Team with id ${id} not found`);
+    }
+    this.teamRepository.merge(team, updateTeamDto);
+    return await this.teamRepository.save(team);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} team`;
+  async remove(id: string): Promise<void> {
+    await this.teamRepository.delete(id);
   }
 }

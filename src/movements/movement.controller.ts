@@ -11,6 +11,8 @@ import { MovementService } from './movement.service';
 import { CreateMovementDto } from './dto/create-movement.dto';
 import { UpdateMovementDto } from './dto/update-movement.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { FindOneOptions } from 'typeorm';
+import { Movement } from './entities/movement.entity';
 
 @ApiTags('movements')
 @Controller('movements')
@@ -28,20 +30,20 @@ export class MovementController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.movementService.findOne(+id);
+  findOne(@Param('id') id: FindOneOptions<Movement>) {
+    return this.movementService.findOne(id);
   }
 
   @Patch(':id')
   update(
-    @Param('id') id: string,
+    @Param('id') id: FindOneOptions<Movement>,
     @Body() updateMovementDto: UpdateMovementDto,
   ) {
-    return this.movementService.update(+id, updateMovementDto);
+    return this.movementService.update(id, updateMovementDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.movementService.remove(+id);
+    return this.movementService.remove(id);
   }
 }

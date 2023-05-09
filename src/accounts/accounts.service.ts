@@ -1,26 +1,40 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { FindOneOptions, Repository } from 'typeorm';
 import { CreateAccountDto } from './dto/create-account.dto';
 import { UpdateAccountDto } from './dto/update-account.dto';
+import { Account } from './entities/account.entity';
 
 @Injectable()
 export class AccountsService {
-  create(createAccountDto: CreateAccountDto) {
-    return 'This action adds a new account';
+  constructor(
+    @InjectRepository(Account)
+    private accountsRepository: Repository<Account>,
+  ) {}
+
+  async create(createAccountDto: CreateAccountDto): Promise<Account> {
+    const account = this.accountsRepository.create(createAccountDto);
+    return await this.accountsRepository.save(account);
   }
 
-  findAll() {
-    return `This action returns all accounts`;
+  async findAll(): Promise<Account[]> {
+    return await this.accountsRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} account`;
+  async findOne(id: FindOneOptions<Account>): Promise<Account> {
+    return await this.accountsRepository.findOne(id);
   }
 
-  update(id: number, updateAccountDto: UpdateAccountDto) {
-    return `This action updates a #${id} account`;
+  async update(
+    id: FindOneOptions<Account>,
+    updateAccountDto: UpdateAccountDto,
+  ): Promise<Account> {
+    const account = await this.accountsRepository.findOne(id);
+    this.accountsRepository.merge(account, updateAccountDto);
+    return await this.accountsRepository.save(account);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} account`;
+  async remove(id: string): Promise<void> {
+    await this.accountsRepository.delete(id);
   }
 }
